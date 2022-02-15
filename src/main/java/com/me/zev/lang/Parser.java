@@ -18,7 +18,7 @@ public final class Parser {
     static {
         Token[] commandPrefixes = Token.fromStrings(
                 "move", "spin", "wait", "angle", "forward", "upward", "for", "at", "speed",
-                "x", "y"
+                "x", "y", "\n"
         );
         PARSEABLES.addAll(Arrays.asList(commandPrefixes));
         PARSEABLES.add(new Number());
@@ -36,9 +36,9 @@ public final class Parser {
                 int start = at;
                 if (match != -1) {
                     at += match;
+                    parsed.add(new ParsedItem(parseable, code.substring(start, at)));
+                    continue main;
                 }
-                parsed.add(new ParsedItem(parseable, code.substring(start, at)));
-                continue main;
             }
             settings.getErrorHandler().handle(new ParsingError(at, "Couldn't parse, no valid syntax matches this code.", settings));
             return null;

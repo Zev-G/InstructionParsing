@@ -10,4 +10,9 @@ public class ParsedItem {
         this.code = code;
     }
 
+    @Override
+    public String toString() {
+        return "\"" + code.replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r") + "\"";
+    }
+
 }
