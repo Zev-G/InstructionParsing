@@ -29,4 +29,12 @@ public abstract class ParseableExtension implements Parseable {
         return parseable.getName();
     }
 
+    public ParseableExtension endsWord() {
+        return Parseables.endsWord(this);
+    }
+
+    public ParseableExtension allowLeadingWhiteSpace() {
+        return Parseables.allowLeadingWhiteSpace(this);
+    }
+
 }

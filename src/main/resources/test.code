@@ -1,1 +1,3 @@
-wait wait
+wait for 2s
+move for 2s
+spin 80 deg
