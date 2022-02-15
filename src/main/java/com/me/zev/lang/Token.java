@@ -28,7 +28,7 @@ public class Token implements Parseable {
         int offset = 0;
         if (ignoreLeadingWhiteSpace && !text.isEmpty()) {
             int lenBeforeTrim = text.length();
-            while (Character.isWhitespace(text.charAt(0))) {
+            while (Text.isWhitespace(text.charAt(0))) {
                 text = text.substring(1);
                 if (text.isEmpty()) return -1;
             }

@@ -3,15 +3,19 @@ package com.me.zev.lang;
 public class ParsedItem {
 
     private final Parseable parseable;
-    private final String code;
+    private final ParserSettings settings;
+    private final int start;
+    private final int end;
 
     private final String name;
 
-    public ParsedItem(Parseable parseable, String code) {
+    public ParsedItem(Parseable parseable, ParserSettings settings, int start, int end) {
         this.parseable = parseable;
-        this.code = code;
 
         this.name = parseable.getName();
+        this.settings = settings;
+        this.start = start;
+        this.end = end;
     }
 
     @Override
@@ -26,8 +30,12 @@ public class ParsedItem {
         return name;
     }
 
+    public String getCode() {
+        return settings.getCode().substring(start, end);
+    }
+
     public String getFormattedCode() {
-        return code.replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r");
+        return getCode().replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r");
     }
 
 }

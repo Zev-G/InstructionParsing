@@ -20,7 +20,7 @@ public final class Parseables {
             public int matches(String text) {
                 if (text.isEmpty()) return getParseable().matches(text);
                 int ogLen = text.length();
-                while (Character.isWhitespace(text.charAt(0))) {
+                while (Text.isWhitespace(text.charAt(0))) {
                     text = text.substring(1);
                     if (text.isEmpty()) return -1;
                 }

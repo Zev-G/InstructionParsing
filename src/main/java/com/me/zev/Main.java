@@ -1,5 +1,6 @@
 package com.me.zev;
 
+import com.me.zev.lang.ParsedItem;
 import com.me.zev.lang.Parser;
 import com.me.zev.lang.ParserSettings;
 import com.me.zev.lang.ParsingError;
@@ -23,9 +24,14 @@ public class Main {
         );
         settings.getParseables().addAll(Parser.PARSEABLES);
 
-        System.out.println(Arrays.toString(
-                Parser.lexerParse(settings)
-        ));
+        ParsedItem[] items = Parser.parse(settings);
+
+        StringBuilder builder = new StringBuilder();
+        for (ParsedItem item : items) {
+            builder.append(item.getCode());
+        }
+
+        System.out.println(builder);
     }
 
 }

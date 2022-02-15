@@ -11,7 +11,7 @@ public class Number implements Type<Double> {
     public int matches(String text) {
         int lenBeforeTrim = text.length();
         // Remove leading whitespace
-        while (Character.isWhitespace(text.charAt(0))) {
+        while (Text.isWhitespace(text.charAt(0))) {
             text = text.substring(1);
             if (text.isEmpty()) return -1;
         }

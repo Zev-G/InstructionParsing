@@ -3,6 +3,7 @@ package com.me.zev.lang;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // move (forward|backward) [for] %duration%|%distance%
 // move (forward|backward) %duration% [at angle %angle%]
@@ -14,6 +15,7 @@ import java.util.List;
 public final class Parser {
 
     public static final List<Parseable> PARSEABLES = new ArrayList<>();
+    public static final List<String> IGNORE = Arrays.asList("for", "at", "comment");
 
     static {
         Token[] commandPrefixes = Token.fromStrings(
@@ -32,7 +34,27 @@ public final class Parser {
         PARSEABLES.addAll(Arrays.asList(misc));
     }
 
-    public static ParsedItem[] lexerParse(ParserSettings settings) {
+    private final ParserSettings settings;
+
+    private Parser(ParserSettings settings) {
+        this.settings = settings;
+    }
+
+    public static ParsedItem[] parse(ParserSettings settings) {
+        Parser parser = new Parser(settings);
+
+        return parser.parse();
+    }
+
+    private ParsedItem[] parse() {
+        ParsedItem[] lexer = lexerParse();
+        if (lexer == null) return null;
+        lexer = trimLexer(lexer);
+
+        return lexer;
+    }
+
+    public ParsedItem[] lexerParse() {
         String code = settings.getCode();
         int at = 0;
         int len = code.length();
@@ -51,7 +73,7 @@ public final class Parser {
                 int start = at;
                 if (match != -1) {
                     at += match;
-                    parsed.add(new ParsedItem(parseable, code.substring(start, at)));
+                    parsed.add(new ParsedItem(parseable, settings, start, at));
                     continue main;
                 }
             }
@@ -59,6 +81,17 @@ public final class Parser {
             return null;
         }
         return parsed.toArray(new ParsedItem[0]);
+    }
+
+    private ParsedItem[] trimLexer(ParsedItem[] lexer) {
+        List<ParsedItem> items = new ArrayList<>(Arrays.asList(lexer));
+        items.removeIf(this::removeLexerItem);
+        return items.toArray(new ParsedItem[0]);
+    }
+
+    private boolean removeLexerItem(ParsedItem item) {
+        String name = item.getName();
+        return IGNORE.contains(name);
     }
 
 }
