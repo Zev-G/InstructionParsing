@@ -33,21 +33,17 @@ public class Number implements Type<Double> {
                 continue;
             }
             if (onNumbers) {
-                return i + matchSuffix(text.substring(i)) + offset;
+                return i + offset;
             } else {
                 return -1;
             }
         }
 
         if (onNumbers) {
-            return text.length() + matchSuffix("") + offset;
+            return text.length() + offset;
         } else {
             return -1;
         }
-    }
-
-    protected int matchSuffix(String text) {
-        return 0;
     }
 
     @Override

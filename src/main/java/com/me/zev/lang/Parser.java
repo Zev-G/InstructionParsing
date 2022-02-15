@@ -1,6 +1,7 @@
 package com.me.zev.lang;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // move (forward|backward) [for] %duration%|%distance%
@@ -12,13 +13,15 @@ import java.util.List;
 //
 public final class Parser {
 
-    private static final List<Parseable> PARSEABLES = new ArrayList<>();
+    public static final List<Parseable> PARSEABLES = new ArrayList<>();
 
     static {
         Token[] commandPrefixes = Token.fromStrings(
                 "move", "spin", "wait", "angle", "forward", "upward", "for", "at", "speed",
                 "x", "y"
         );
+        PARSEABLES.addAll(Arrays.asList(commandPrefixes));
+        PARSEABLES.add(new Number());
     }
 
     public static ParsedItem[] lexerParse(ParserSettings settings) {
