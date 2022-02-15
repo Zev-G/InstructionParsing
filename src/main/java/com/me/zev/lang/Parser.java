@@ -21,14 +21,26 @@ public final class Parser {
         );
     }
 
-//    private static String[] lexerParse(String text) {
-//        int at = 0;
-//        int len = text.length();
-//
-//        List<String> parsed = new ArrayList<>();
-//        while (at < len) {
-//
-//        }
-//    }
+    public static ParsedItem[] lexerParse(ParserSettings settings) {
+        String code = settings.getCode();
+        int at = 0;
+        int len = code.length();
+
+        List<ParsedItem> parsed = new ArrayList<>();
+        main: while (at < len) {
+            for (Parseable parseable : settings.getParseables()) {
+                int match = parseable.matches(code.substring(at));
+                int start = at;
+                if (match != -1) {
+                    at += match;
+                }
+                parsed.add(new ParsedItem(parseable, code.substring(start, at)));
+                continue main;
+            }
+            settings.getErrorHandler().handle(new ParsingError(at, "Couldn't parse, no valid syntax matches this code.", settings));
+            return null;
+        }
+        return parsed.toArray(new ParsedItem[0]);
+    }
 
 }

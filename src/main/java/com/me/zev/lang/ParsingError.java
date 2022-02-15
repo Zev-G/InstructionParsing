@@ -2,7 +2,6 @@ package com.me.zev.lang;
 
 public class ParsingError {
 
-    // CAN be equal to each other.
     private final int at;
     private final String explanation;
     private final ParserSettings settings;
