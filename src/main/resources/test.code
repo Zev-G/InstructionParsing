@@ -1,3 +1,7 @@
-wait for 2s
-move for 2s
-spin 80 deg
+wait for 10.03s
+
+wait for 10.0s
+
+spin 12 deg
+
+move forward for 2s
