@@ -5,7 +5,7 @@ public class Token implements Parseable {
     private final String text;
     private final String name;
 
-    private boolean ignoreLeadingWhiteSpace = false;
+    private boolean ignoreLeadingWhiteSpace = true;
 
     public Token(String text) {
         this(text, text);

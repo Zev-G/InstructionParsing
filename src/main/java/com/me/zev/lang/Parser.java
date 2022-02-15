@@ -24,6 +24,7 @@ public final class Parser {
                 new RegexToken("\n|\r", "new-line"),
                 Parseables.endsWord(new Token("s", "second")),
                 Parseables.endsWord(new Token("ms", "millisecond")),
+                Parseables.endsWord(new RegexToken("deg(rees|)", "degrees")),
                 new Number()
         };
         PARSEABLES.addAll(Arrays.asList(commandPrefixes));
