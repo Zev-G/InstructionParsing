@@ -47,6 +47,11 @@ public class Number implements Type<Double> {
     }
 
     @Override
+    public String getName() {
+        return "number";
+    }
+
+    @Override
     public Double convert(String code) {
         return Double.parseDouble(code);
     }

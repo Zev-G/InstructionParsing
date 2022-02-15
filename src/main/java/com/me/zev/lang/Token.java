@@ -3,10 +3,16 @@ package com.me.zev.lang;
 public class Token implements Parseable {
 
     private final String text;
+    private final String name;
+
     private boolean ignoreLeadingWhiteSpace = false;
 
     public Token(String text) {
+        this(text, text);
+    }
+    public Token(String text, String name) {
         this.text = text;
+        this.name = name;
     }
 
     public static Token[] fromStrings(String... strings) {
@@ -32,6 +38,11 @@ public class Token implements Parseable {
             return this.text.length() + offset;
         }
         return -1;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public boolean isIgnoreLeadingWhiteSpace() {

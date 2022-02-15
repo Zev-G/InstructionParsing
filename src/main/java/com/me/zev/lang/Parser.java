@@ -17,11 +17,17 @@ public final class Parser {
 
     static {
         Token[] commandPrefixes = Token.fromStrings(
-                "move", "spin", "wait", "angle", "forward", "upward", "for", "at", "speed",
-                "x", "y", "\n"
+                "move", "spin", "wait", "angle", "forward", "upward", "for", "at", "speed"
         );
+        Parseable[] misc = {
+                new RegexToken("x|y", "coordinate"),
+                new RegexToken("\n|\r", "new-line"),
+                Parseables.endsWord(new Token("s", "second")),
+                Parseables.endsWord(new Token("ms", "millisecond")),
+                new Number()
+        };
         PARSEABLES.addAll(Arrays.asList(commandPrefixes));
-        PARSEABLES.add(new Number());
+        PARSEABLES.addAll(Arrays.asList(misc));
     }
 
     public static ParsedItem[] lexerParse(ParserSettings settings) {
