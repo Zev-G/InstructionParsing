@@ -22,6 +22,10 @@ public class ParsedItem {
                 '}';
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getFormattedCode() {
         return code.replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r");
     }

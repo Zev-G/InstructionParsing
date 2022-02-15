@@ -41,8 +41,9 @@ public final class Parser {
         int times = 0;
         main: while (at < len) {
             times++;
-            if (times > 1e7) {
-                settings.getErrorHandler().handle(new ParsingError(at, "Got stuck here. Last parsed with " + parsed.get(parsed.size() - 1) + ".", settings));
+            if (times > 1e6) {
+                ParsedItem lastParsed = parsed.isEmpty() ? null : parsed.get(parsed.size() - 1);
+                settings.getErrorHandler().handle(new ParsingError(at, "Parser got stuck in an infinite loop here." + (lastParsed != null ? " Last parsed \"" + lastParsed.getFormattedCode() + "\" (" + lastParsed.getName() + ")." : ""), settings));
                 return null;
             }
             for (Parseable parseable : settings.getParseables()) {
