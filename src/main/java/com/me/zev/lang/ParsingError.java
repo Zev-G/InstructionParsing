@@ -22,7 +22,7 @@ public class ParsingError {
         int maxLen = String.valueOf(line + 1).length();
         StringBuilder builder = new StringBuilder();
 
-        builder.append("Error on line ").append(line + 1).append(" at position ").append(placeInLine);
+        builder.append("Error on line ").append(line + 1).append(" at position ").append(placeInLine + 1);
         if (settings.getPath() != null) {
             builder.append(" in file \"").append(settings.getPath()).append("\"");
         }
@@ -35,7 +35,7 @@ public class ParsingError {
             }
             builder.append(lineNumber).append(" | ").append(settings.getLine(i)).append("\n");
         }
-        builder.append(" ".repeat(placeInLine - 1 + maxLen + 3)).append("^").append("\n").append(explanation).append("\n");
+        builder.append(" ".repeat(placeInLine + maxLen + 3)).append("^").append("\n").append(explanation).append("\n");
 
         return builder.toString();
     }
