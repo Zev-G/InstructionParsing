@@ -1,7 +1,7 @@
 wait for 10.03s
-
+// comment 1
 wait for 10.0s
-
+/* comment 2 */
 spin 12 deg
 
 move forward for 2s

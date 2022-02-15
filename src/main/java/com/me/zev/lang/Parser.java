@@ -25,7 +25,8 @@ public final class Parser {
                 Parseables.endsWord(new Token("s", "second")),
                 Parseables.endsWord(new Token("ms", "millisecond")),
                 Parseables.endsWord(new RegexToken("deg(rees|)", "degrees")).allowLeadingWhiteSpace(),
-                new Number()
+                new Number(),
+                new Comment()
         };
         PARSEABLES.addAll(Arrays.asList(commandPrefixes));
         PARSEABLES.addAll(Arrays.asList(misc));
@@ -37,7 +38,13 @@ public final class Parser {
         int len = code.length();
 
         List<ParsedItem> parsed = new ArrayList<>();
+        int times = 0;
         main: while (at < len) {
+            times++;
+            if (times > 1e7) {
+                settings.getErrorHandler().handle(new ParsingError(at, "Got stuck here. Last parsed with " + parsed.get(parsed.size() - 1) + ".", settings));
+                return null;
+            }
             for (Parseable parseable : settings.getParseables()) {
                 int match = parseable.matches(code.substring(at));
                 int start = at;
