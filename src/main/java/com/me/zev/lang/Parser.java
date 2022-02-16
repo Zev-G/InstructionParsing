@@ -40,21 +40,79 @@ public final class Parser {
         this.settings = settings;
     }
 
-    public static ParsedItem[] parse(ParserSettings settings) {
+    public static ASTNode parse(ParserSettings settings) {
         Parser parser = new Parser(settings);
 
         return parser.parse();
     }
 
-    private ParsedItem[] parse() {
+    private ASTNode parse() {
         ParsedItem[] lexer = lexerParse();
         if (lexer == null) return null;
         lexer = trimLexer(lexer);
 
-        return lexer;
+        return parseAbstractSyntaxTree(lexer);
     }
 
-    public ParsedItem[] lexerParse() {
+    private ASTNode parseAbstractSyntaxTree(ParsedItem[] lexer) {
+        ParsedItem item = new ParsedItem(Parseables.name("file"), settings, 0, settings.getCode().length());
+        return new ASTNode(item, parseASTPortion(lexer));
+    }
+
+    private ASTNode[] parseASTPortion(ParsedItem[] items) {
+        if (lexerContainsName("new-line", items)) {
+            return separateIntoLines(items);
+        }
+        // convert all to ASTNodes
+        ASTNode[] nodes = new ASTNode[items.length];
+        for (int i = 0, itemsLength = items.length; i < itemsLength; i++) {
+            nodes[i] = new ASTNode(items[i]);
+        }
+        return nodes;
+    }
+
+    private boolean lexerContainsName(String name, ParsedItem[] lexer) {
+        for (ParsedItem item : lexer) {
+            if (item.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ASTNode[] separateIntoLines(ParsedItem[] lexer) {
+        List<ASTNode> items = new ArrayList<>();
+        List<ParsedItem> buffer = new ArrayList<>();
+        Parseable line = Parseables.name("new-line");
+        for (ParsedItem item : lexer) {
+            if (item.getName().equals("new-line")) {
+                if (!buffer.isEmpty()) {
+                    items.add(new ASTNode(
+                                    new ParsedItem(
+                                            line, settings, buffer.get(0).getStart(),
+                                            buffer.get(buffer.size() - 1).getEnd()),
+                                    parseASTPortion(buffer.toArray(new ParsedItem[0]))
+                            )
+                    );
+                    buffer.clear();
+                }
+            } else {
+                buffer.add(item);
+            }
+        }
+        if (!buffer.isEmpty()) {
+            items.add(new ASTNode(
+                            new ParsedItem(
+                                    line, settings, buffer.get(0).getStart(),
+                                    buffer.get(buffer.size() - 1).getEnd()),
+                            parseASTPortion(buffer.toArray(new ParsedItem[0]))
+                    )
+            );
+        }
+        return items.toArray(new ASTNode[0]);
+    }
+
+    private ParsedItem[] lexerParse() {
         String code = settings.getCode();
         int at = 0;
         int len = code.length();

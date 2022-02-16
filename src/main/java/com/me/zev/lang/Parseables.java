@@ -37,4 +37,21 @@ public final class Parseables {
         };
     }
 
+    public static Parseable constant(int val, String name) {
+        return new Parseable() {
+            @Override
+            public int matches(String text) {
+                return val;
+            }
+
+            @Override
+            public String getName() {
+                return name;
+            }
+        };
+    }
+
+    public static Parseable name(String name) {
+        return constant(-1, name);
+    }
 }

@@ -34,6 +34,14 @@ public class ParsedItem {
         return settings.getCode().substring(start, end);
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
     public String getFormattedCode() {
         return getCode().replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r");
     }

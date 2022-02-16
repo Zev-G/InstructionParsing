@@ -1,9 +1,6 @@
 package com.me.zev;
 
-import com.me.zev.lang.ParsedItem;
-import com.me.zev.lang.Parser;
-import com.me.zev.lang.ParserSettings;
-import com.me.zev.lang.ParsingError;
+import com.me.zev.lang.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -24,14 +21,9 @@ public class Main {
         );
         settings.getParseables().addAll(Parser.PARSEABLES);
 
-        ParsedItem[] items = Parser.parse(settings);
+        ASTNode ast = Parser.parse(settings);
 
-        StringBuilder builder = new StringBuilder();
-        for (ParsedItem item : items) {
-            builder.append(item.getCode());
-        }
-
-        System.out.println(builder);
+        System.out.println(ast.toPrettyString());
     }
 
 }
